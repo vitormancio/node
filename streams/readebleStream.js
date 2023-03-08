@@ -1,9 +1,9 @@
 // This is my first readeble method Api
 
 import { stdout } from 'node:process'
-import { Readable } from 'node:stream'
+import { Readable, Writable } from 'node:stream'
 
-export default class ReadableStream extends Readable { 
+class ReadableStream extends Readable { 
     index = 1
     _read() {
         const i = this.index++
@@ -17,5 +17,12 @@ export default class ReadableStream extends Readable {
     }   
 }
 
+class MultiByTenStream extends Writable {
+    _write(chunk, encoding, callback) {
+        console.log(Number(chunk.toString() * 10))
+        callback()
+    }
+}
+
 new ReadableStream()
-    .pipe(stdout)
+    .pipe(new MultiByTenStream())
